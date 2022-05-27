@@ -1,0 +1,58 @@
+version: '3.0'
+
+#Docker Networks
+networks:
+  laravel:
+    driver: bridge
+
+#Volumes
+volumes:
+  dbdata:
+    driver: local
+
+# Workflow
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "8080:80"
+      # Port for xdebug (ensure this matches the remote_port in the xdebug.ini)
+      - "9001:9001"
+    volumes:
+      - ./src:/var/www/html:delegated
+    depends_on:
+      - php
+      - postgres
+    networks:
+      - laravel
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5430:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/postgresql/:/docker-entrypoint-initdb.d/
+    networks:
+      - laravel
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    container_name: php
+    volumes:
+      - ./src:/var/www/html:delegated
+      # Enable xdebug
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    ports:
+      - "9000:9000"
+    networks:
+      - laravel

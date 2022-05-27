@@ -1,0 +1,30 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@popperjs/core": "^2.11.5",
+        "axios": "^0.21.4",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.51.0",
+        "sass-loader": "^12.6.0"
+    },
+    "dependencies": {
+        "vue": "^3.2.33",
+        "vue-axios": "^3.4.1",
+        "vue-loader": "^17.0.0",
+        "vue-router": "^4.0.15",
+        "vuex": "^4.0.2",
+        "vuex-persistedstate": "^4.1.0"
+    }
+}
